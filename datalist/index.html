@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./bower_components/jquery/dist/jquery.js"></script>
+    <script src="script.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <form name="formulario" id="formulario" action="#" method="POST">
+<!-- La datalist con id 'listas' y sus diferentes valores -->
+ 
+Escribe un color (Azul, rojo, amarillo, negro, verde): 
+<datalist id="listas">
+    <option value="azul">
+    <option value="rojo">
+    <option value="amarillo">
+    <option value="negro">
+    <option value="verde">
+</datalist>
+ 
+<!-- Asociamos al input la datalist 'listas' -->
+    <input name="color" list="listas">
+    <input type="submit" value="Enviar">
+</form>
+
+
+</body>
+</html>
