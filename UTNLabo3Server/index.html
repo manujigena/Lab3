@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title></title>
+</head>
+<body>
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-4 col-md-offset-4">
+            <h1 class="text-center login-title">Sign in to continue to main.html</h1>
+            <div class="account-wall">
+                <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
+                    alt="">
+                <form class="form-signin">
+                <input id="txtEmail" type="text" class="form-control" placeholder="Email" required autofocus>
+                <input id="txtPassword" type="password" class="form-control" placeholder="Password" required>
+                <button id="btnSubmit" class="btn btn-lg btn-primary btn-block" type="submit">
+                    Sign in</button>
+                <label class="checkbox pull-left">
+                    <input type="checkbox" value="remember-me">
+                    Remember me
+                </label>
+                <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
+                </form>
+            </div>
+            <a href="#" class="text-center new-account">Create an account </a>
+        </div>
+    </div>
+</div>
+       
+
+    <script>
+        addEventListener('load', inicializarEventos, false);
+
+        function inicializarEventos() {
+                var btnSubmit = document.getElementById('btnSubmit');
+                btnSubmit.addEventListener('click', presionbtnSubmit);
+                
+        }
+        
+        var request = new XMLHttpRequest();
+        
+        //PRESION Boton GET
+        function presionbtnSubmit() {
+            
+            var url = 'http://localhost:1337/login';
+            //var url = 'http://utnfralaboiii.azurewebsites.net/login';        
+            request.open('POST', url, true);
+            request.onreadystatechange = procesarLogin;
+            //preparo los datos
+            var email = document.getElementById('txtEmail').value;
+            var password = document.getElementById('txtPassword').value;
+            
+            var datosLogin = {
+                email: email,
+                password: password
+            }
+            
+            request.send(JSON.stringify(datosLogin));
+
+        }
+
+        function procesarLogin() {
+
+
+            if (request.readyState == 4) {
+                var JSONResponseObject = JSON.parse(request.responseText);
+                if (JSONResponseObject.autenticado == "si") {
+                    var url = "file:///C:/Users/mariano.j.mutti/Documents/Visual%20Studio%202015/Projects/UTNLabo3Server/UTNLabo3Server/main.html";
+                    url = url + "?color=" + JSONResponseObject.preferencias.color;
+                    url = url + "&fuente=" + JSONResponseObject.preferencias.font;
+                    window.location.replace(url);
+                }
+               
+            }
+            else {
+
+            }
+        }
+
+    </script>
+</body>
+</html>

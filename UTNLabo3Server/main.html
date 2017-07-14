@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous">
+
+    </script>
+    <title></title>
+</head>
+<body>
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-4 col-md-offset-4">
+            <h1 class="text-center login-title">Bienvenido</h1>
+            <div id="divPreferencias">
+                 <table id="tblPreferencias" class="table">
+                    <thead>
+                        <tr>
+                            <th>Atributo</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                     <tbody>
+                         <tr>
+                             <td>Color</td>
+                             <td>Valor1</td>
+                         </tr>
+                         <tr>
+                             <td>Fuente</td>
+                             <td>Valor2</td>
+                         </tr>
+                     </tbody>
+                 </table>
+            </div>
+            <div id="divEjemplo">
+                <span class="label" id="lblEjemplo">
+                    ASI VOY A QUEDAR
+                </span>
+                    
+                
+            </div>
+            <button id="btnSubmit" class="btn btn-lg btn-primary btn-block" type="submit">
+                Cambiar Preferencias
+            </button>
+        </div>
+    </div>
+</div>
+       
+
+    <script>
+        addEventListener('load', inicializarEventos, false);
+
+        var fuente = getParameterByName("fuente");
+        var color = getParameterByName("color");
+
+        function inicializarEventos() {
+       
+                var btnSubmit = document.getElementById('btnSubmit');
+                btnSubmit.addEventListener('click', presionbtnSubmit);
+                
+                cargarPreferencias();
+        }
+        
+        function cargarPreferencias() {
+            $('#tblPreferencias td').eq(1).html(color);
+            $('#tblPreferencias td').eq(3).html(fuente);
+            $('#lblEjemplo').css("background-color", color)
+            $('#lblEjemplo').css("font-family", fuente)
+        }
+        var request = new XMLHttpRequest();
+        
+        //PRESION Boton GET
+        function presionbtnSubmit() {
+            
+            var url = 'http://localhost:1337/cambiarPreferencias';
+            //var url = 'http://utnfralaboiii.azurewebsites.net/cambiarPreferencias';        
+            request.open('POST', url, true);
+            request.onreadystatechange = procesarNuevasPreferencias;
+            //preparo los datos
+            var datosPOST = {
+                color:$('#tblPreferencias td').eq(1).html(),
+                fuente:$('#tblPreferencias td').eq(3).html()
+            }
+            
+            request.send(JSON.stringify(datosPOST));
+
+        }
+
+        function procesarNuevasPreferencias() {
+            if (request.readyState == 4) {
+                var JSONResponseObject = JSON.parse(request.responseText);
+
+                $('#tblPreferencias td').eq(1).html(JSONResponseObject.color);
+                $('#tblPreferencias td').eq(3).html(JSONResponseObject.font);
+                $('#lblEjemplo').css("background-color", JSONResponseObject.color)
+                $('#lblEjemplo').css("font-family", JSONResponseObject.font)
+            }
+        }
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }   
+
+    </script>
+</body>
+</html>

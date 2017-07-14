@@ -1,0 +1,10 @@
+{
+  "name": "UTNLabo3Server",
+  "version": "0.0.0",
+  "description": "UTNLabo3Server",
+  "main": "server.js",
+  "author": {
+    "name": "mariano.j.mutti",
+    "email": ""
+  }
+}
